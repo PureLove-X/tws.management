@@ -1,5 +1,8 @@
 # TWSManagement
 
+This is a fork.
+Originally by kylejuliandev 
+
 ## General
 
 Plugin to provide management functionalities for Minecraft servers. Specifically, this plugin was created for the The Wooden Spoon Minecraft Server. You can check out their website @ [tws.gg](https://tws.gg/).
@@ -28,14 +31,6 @@ This plugin has a variety of bespoke features intended for the use of TWS Server
   - To activate the HUD players can use the following command:
     - `/hud`
   - Players who have enabled the HUD are stored in a local SQLite database
-- Add automatic unwhitelisting of players who are inactive for a configurable [config.json](https://github.com/kylejulian98/tws.management/blob/master/src/main/resources/config.json#L17) amount of days and hours.
-  - If a player is inactive for more than the combined duration (days + hours) they will be removed from the server whitelist
-  - If the player is due to be unwhitelisted, they can be made exempt through granting them a permission node `tws.exempt.auto` or using the in-game commands (see below).
-- To add Players to the exempt list for the auto unwhitelisting, you can use the in-game commands below:
-  - `/exe list`
-  - `/exe add <PlayerName>`
-  - `/exe remove <PlayerName>`
-  - `/exe clear`
 
 This plugin maintains a local SQLite database which persists information used by some of the provided features. This is found under: `/plugins/tws.management/tws-local.db`.
 
@@ -54,3 +49,4 @@ To run this plugin you must have the following dependencies also running on your
 
 - ❗ [TAB](https://www.mc-market.org/resources/20631/) - Displays the AFK suffix tag next to your name, in the tab leaderboard.
 - ❓ [LuckPerms](https://www.spigotmc.org/resources/luckperms.28140/) - Used when checking if players have a permission node when automatically unwhitelisting.
+
