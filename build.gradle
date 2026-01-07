@@ -5,17 +5,10 @@ plugins {
     id 'com.gradleup.shadow' version '9.3.1'
 }
 
-group = "dev.kylejulian.twsmanagement"
-def dirStr = layout.buildDirectory.get().asFile.toString() + '/libs/'
-def pipelineVersion = System.getenv('GITHUB_REF_NAME')
-version = pipelineVersion
-
-if (version.split('v').length < 2) {
-    version = '1.0.0-beta'
-}
-else {
-    version = version.split('v')[1]
-}
+def gitRef = System.getenv("GITHUB_REF_NAME")
+version = gitRef != null && gitRef.startsWith("v")
+        ? gitRef.substring(1)
+        : "1.0.0-beta"
 
 
 repositories {
