@@ -1,7 +1,7 @@
 # TWSManagement
 
-This is a fork.
-Originally by kylejuliandev 
+This is an continuation by request.
+[Originally by kylejuliandev[(https://github.com/kylejuliandev/tws.management)
 
 ## General
 
@@ -38,6 +38,8 @@ This plugin maintains a local SQLite database which persists information used by
 
 This plugin runs on Minecraft [Purpur 1.20.1](https://purpurmc.org/docs/). You can download the latest version of the plugin jar through navigating the Packages section of this github repository, or using the following link [packages](https://github.com/kylejulian98/tws.management/packages).
 
+This plugin has also been confirmed to work with PaperMC jar files. 
+
 #### Requirements
 
 The following symbols are used to indicate if a dependency (plugin also running on the server) is essential or not:
@@ -48,5 +50,5 @@ The following symbols are used to indicate if a dependency (plugin also running 
 To run this plugin you must have the following dependencies also running on your Minecraft Server:
 
 - ❗ [TAB](https://www.mc-market.org/resources/20631/) - Displays the AFK suffix tag next to your name, in the tab leaderboard.
-- ❓ [LuckPerms](https://www.spigotmc.org/resources/luckperms.28140/) - Used when checking if players have a permission node when automatically unwhitelisting.
+
 
