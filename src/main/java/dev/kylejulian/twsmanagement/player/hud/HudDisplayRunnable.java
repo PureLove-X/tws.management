@@ -27,22 +27,22 @@ public class HudDisplayRunnable extends BukkitRunnable {
         }
 
         final Location location = player.getLocation();
-        final Integer x = location.getBlockX();
-        final Integer y = location.getBlockY();
-        final Integer z = location.getBlockZ();
+        final double x = location.getX();
+        final double y = location.getY();
+        final double z = location.getZ();
 
         final long playerWorldTime = player.getWorld().getTime();
         final float playerYaw = location.getYaw();
 
-        String xDisplay = "\u00a7a\u00a7lX \u00a7r%s ";
+        String xDisplay = "§a§lX §r%.1f ";
         final Component xFormatted = Component.text(String.format(xDisplay, x));
-        String yDisplay = "\u00a7a\u00a7lY \u00a7r%s ";
+        String yDisplay = "§a§lY §r%.1f ";
         final Component yFormatted = Component.text(String.format(yDisplay, y));
-        String zDisplay = "\u00a7a\u00a7lZ \u00a7r%s ";
+        String zDisplay = "§a§lZ §r%.1f ";
         final Component zFormatted = Component.text(String.format(zDisplay, z));
-        String orientationDisplay = "\u00a7e\u00a7l%s ";
+        String orientationDisplay = "§e§l%s ";
         final Component orientationFormatted = Component.text(String.format(orientationDisplay, Orientation.getOrientation(playerYaw)));
-        String timeDisplay = "\u00a7c\u00a7l%s";
+        String timeDisplay = "§c§l%s";
         final Component timeFormatted = Component.text(String.format(timeDisplay, Time.ticksToTime(playerWorldTime)));
 
         Component baseComponent = Component.empty()

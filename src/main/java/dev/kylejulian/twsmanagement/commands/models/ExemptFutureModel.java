@@ -5,9 +5,9 @@ import java.util.UUID;
 public record ExemptFutureModel(UUID playerId, Boolean isExempt) {
 
     /**
-     * Get the Player Id
+     * Get the Player ID
      *
-     * @return Player Id
+     * @return Player ID
      */
     public UUID getPlayerId() {
         return this.playerId;
@@ -16,7 +16,7 @@ public record ExemptFutureModel(UUID playerId, Boolean isExempt) {
     /**
      * Get whether or not the Player was Exempt
      *
-     * @return Is auto unwhitelist Exempt
+     * @return Is auto afk Exempt
      */
     public Boolean getIsExempt() {
         return this.isExempt;

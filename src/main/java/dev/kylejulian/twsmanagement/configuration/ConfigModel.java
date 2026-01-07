@@ -9,7 +9,6 @@ public class ConfigModel {
 	private NightResetConfigModel nightResetConfig;
 	private DatabaseConfigModel databaseConfig;
 	private HudConfigModel hudConfig;
-	private WhitelistConfigModel whitelistConfig;
 
 	public @Nullable AfkConfigModel getAfkConfig() { return this.afkConfig; }
 
@@ -20,8 +19,6 @@ public class ConfigModel {
 	}
 
 	public @Nullable HudConfigModel getHudConfig() { return this.hudConfig; }
-
-	public @Nullable WhitelistConfigModel getWhitelistConfig() { return this.whitelistConfig; }
 	
 	public void setAfkConfig(@NotNull AfkConfigModel afkConfig) {
 		this.afkConfig = afkConfig;
@@ -36,8 +33,4 @@ public class ConfigModel {
 	}
 
 	public void setHudConfig(@NotNull HudConfigModel hudConfig) { this.hudConfig = hudConfig; }
-
-	public void setWhitelistConfig(@NotNull WhitelistConfigModel whitelistConfig) {
-		this.whitelistConfig = whitelistConfig;
-	}
 }

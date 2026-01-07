@@ -3,6 +3,7 @@ package dev.kylejulian.twsmanagement.data.sqlite;
 import dev.kylejulian.twsmanagement.data.DatabaseConnectionManager;
 import dev.kylejulian.twsmanagement.data.DatabaseManager;
 import dev.kylejulian.twsmanagement.data.interfaces.IHudDatabaseManager;
+import dev.kylejulian.twsmanagement.util.LogUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
 
 public class HudDatabaseManager extends DatabaseManager implements IHudDatabaseManager {
 
@@ -34,9 +34,8 @@ public class HudDatabaseManager extends DatabaseManager implements IHudDatabaseM
                  PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
                 statement.execute();
             } catch (SQLException e) {
-                this.getPlugin().getLogger().log(Level.WARNING,
-                        "Unable to setup Default Schema for Hud Database table.");
-                this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+                LogUtils.warn("Unable to setup Default Schema for Hud Database table.");
+                LogUtils.warn(e.getMessage());
             }
 
             try (Connection connection = this.getConnection();
@@ -45,9 +44,8 @@ public class HudDatabaseManager extends DatabaseManager implements IHudDatabaseM
                 indexStatement.execute();
                 indexPlayerIdStatement.execute();
             } catch (SQLException e) {
-                this.getPlugin().getLogger().log(Level.WARNING,
-                        "Unable to setup Default Indexes for Hud Database table.");
-                this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+                LogUtils.warn("Unable to setup Default Indexes for Hud Database table.");
+                LogUtils.warn(e.getMessage());
             }
         });
     }
@@ -73,14 +71,14 @@ public class HudDatabaseManager extends DatabaseManager implements IHudDatabaseM
 
                 result = count == 1;
             } catch (SQLException e) {
-                this.getPlugin().getLogger().log(Level.WARNING, "Unable to execute query for Hud.");
-                this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+                LogUtils.warn("Unable to execute query for Hud.");
+                LogUtils.warn(e.getMessage());
             } finally {
                 if (set != null) {
                     try {
                         set.close();
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        LogUtils.warn(e.getMessage());
                     }
                 }
             }
@@ -100,8 +98,8 @@ public class HudDatabaseManager extends DatabaseManager implements IHudDatabaseM
 
                 statement.execute();
             } catch (SQLException e) {
-                this.getPlugin().getLogger().log(Level.WARNING, "Unable to execute query for Hud.");
-                this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+                LogUtils.warn("Unable to execute query for Hud.");
+                LogUtils.warn(e.getMessage());
             }
         });
     }
@@ -117,8 +115,8 @@ public class HudDatabaseManager extends DatabaseManager implements IHudDatabaseM
 
                 statement.execute();
             } catch (SQLException e) {
-                this.getPlugin().getLogger().log(Level.WARNING, "Unable to execute query for Hud.");
-                this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+                LogUtils.warn("Unable to execute query for Hud.");
+                LogUtils.warn(e.getMessage());
             }
         });
     }

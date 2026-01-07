@@ -2,6 +2,7 @@ package dev.kylejulian.twsmanagement.commands;
 
 import dev.kylejulian.twsmanagement.data.interfaces.IHudDatabaseManager;
 import dev.kylejulian.twsmanagement.player.hud.events.HudEvent;
+import dev.kylejulian.twsmanagement.util.LogUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,8 +24,7 @@ public record HudCommand(JavaPlugin plugin,
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
                              @NotNull String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             final UUID playerId = player.getUniqueId();
 
             CompletableFuture<Boolean> playerHudIsEnabledFuture = hudDatabaseManager.isEnabled(playerId);
@@ -44,13 +44,14 @@ public record HudCommand(JavaPlugin plugin,
 
             return true;
         }
+        LogUtils.warn("You must be a player to use this command!");
         return false;
     }
 
     /**
-     * Raises a Event to trigger Hud event service
+     * Raises an Event to trigger Hud event service
      *
-     * @param playerId Player whom triggered the event
+     * @param playerId Player who triggered the event
      * @param enabled  To indicate if a player wants the Hud to be visible or not
      */
     private void raiseHudEvent(@NotNull final UUID playerId, final boolean enabled) {

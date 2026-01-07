@@ -2,11 +2,10 @@ package dev.kylejulian.twsmanagement.configuration;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
-import java.util.logging.Level;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import dev.kylejulian.twsmanagement.util.LogUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,7 +47,7 @@ public class ConfigurationManager {
         if (!this.file.getParentFile().exists()) {
             boolean makeDirectoryResult = this.file.getParentFile().mkdirs();
             if (!makeDirectoryResult) {
-                this.plugin.getLogger().log(Level.WARNING, "Unable to make directory");
+                LogUtils.error("Unable to make directory");
                 return;
             }
         }
@@ -62,8 +61,8 @@ public class ConfigurationManager {
         try {
             this.config = mapper.readValue(this.file, ConfigModel.class);
         } catch (IOException e) {
-            this.plugin.getLogger().log(Level.SEVERE, "Unable to read Configuration file!");
-            this.plugin.getLogger().log(Level.SEVERE, e.getMessage());
+            LogUtils.error("Unable to read configuration file");
+            LogUtils.error(e.getMessage());
         }
 
         boolean saveRequired = verifyConfigurationDefaults(this.config);
@@ -73,8 +72,8 @@ public class ConfigurationManager {
                 mapper.enable(SerializationFeature.INDENT_OUTPUT);
                 mapper.writeValue(this.file, this.config);
             } catch (IOException e) {
-                this.plugin.getLogger().log(Level.SEVERE, "Unable to write to Configuration file!");
-                this.plugin.getLogger().log(Level.SEVERE, e.getMessage());
+                LogUtils.error("Unable to write to configuration file");
+                LogUtils.error(e.getMessage());
             }
         }
     }
@@ -113,18 +112,6 @@ public class ConfigurationManager {
             hudConfigModel.setRefreshRateTicks(20); // Every second
 
             configModel.setHudConfig(hudConfigModel);
-            saveRequired = true;
-        }
-
-        // Set default Whitelist configuration
-        if (configModel.getWhitelistConfig() == null) {
-            WhitelistConfigModel whitelistConfigModel = new WhitelistConfigModel();
-            whitelistConfigModel.setEnabled(true);
-            whitelistConfigModel.setInactivity(Duration.ofDays(14));
-            whitelistConfigModel.setCheck(Duration.ofMinutes(30));
-            whitelistConfigModel.setWriteLogFile(true);
-
-            configModel.setWhitelistConfig(whitelistConfigModel);
             saveRequired = true;
         }
 

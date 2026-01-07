@@ -4,6 +4,7 @@ import dev.kylejulian.twsmanagement.data.DatabaseConnectionManager;
 import dev.kylejulian.twsmanagement.data.DatabaseManager;
 import dev.kylejulian.twsmanagement.data.entities.EntityExemptList;
 import dev.kylejulian.twsmanagement.data.interfaces.IExemptDatabaseManager;
+import dev.kylejulian.twsmanagement.util.LogUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
 
 public class AfkDatabaseManager extends DatabaseManager implements IExemptDatabaseManager {
 
@@ -37,9 +37,8 @@ public class AfkDatabaseManager extends DatabaseManager implements IExemptDataba
 					PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
 				statement.execute();
 			} catch (SQLException e) {
-				this.getPlugin().getLogger().log(Level.WARNING,
-						"Unable to setup Default Schema for AFK Database table.");
-				this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+				LogUtils.warn("Unable to setup Default Schema for AFK Database table.");
+				LogUtils.warn(e.getMessage());
 			}
 
 			try (Connection connection = this.getConnection();
@@ -48,9 +47,8 @@ public class AfkDatabaseManager extends DatabaseManager implements IExemptDataba
 				indexStatement.execute();
 				indexPlayerIdStatement.execute();
 			} catch (SQLException e) {
-				this.getPlugin().getLogger().log(Level.WARNING,
-						"Unable to setup Default Indexes for AFK Database table.");
-				this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+				LogUtils.warn("Unable to setup Default Indexes for AFK Database table.");
+				LogUtils.warn(e.getMessage());
 			}
 		});
 	}
@@ -70,8 +68,8 @@ public class AfkDatabaseManager extends DatabaseManager implements IExemptDataba
 				statement.setObject(1, playerId);
 				statement.execute();
 			} catch (SQLException e) {
-				this.getPlugin().getLogger().log(Level.WARNING, "Unable to execute query for AFK kick check.");
-				this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+				LogUtils.warn("Unable to execute query for AFK kick check.");
+				LogUtils.warn(e.getMessage());
 			}
 		});
 	}
@@ -91,8 +89,8 @@ public class AfkDatabaseManager extends DatabaseManager implements IExemptDataba
 				statement.setObject(1, playerId);
 				statement.execute();
 			} catch (SQLException e) {
-				this.getPlugin().getLogger().log(Level.WARNING, "Unable to execute query for AFK kick check.");
-				this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+				LogUtils.warn("Unable to execute query for AFK kick check.");
+				LogUtils.warn(e.getMessage());
 			}
 		});
 	}
@@ -123,14 +121,14 @@ public class AfkDatabaseManager extends DatabaseManager implements IExemptDataba
 
 				result = count == 1;
 			} catch (SQLException e) {
-				this.getPlugin().getLogger().log(Level.WARNING, "Unable to execute query for AFK kick check.");
-				this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+				LogUtils.warn("Unable to execute query for AFK kick check.");
+				LogUtils.warn(e.getMessage());
 			} finally {
 				if (set != null) {
 					try {
 						set.close();
 					} catch (SQLException e) {
-						e.printStackTrace();
+						LogUtils.warn(e.getMessage());
 					}
 				}
 			}
@@ -149,7 +147,7 @@ public class AfkDatabaseManager extends DatabaseManager implements IExemptDataba
 		final String sqlCommand = "SELECT * FROM afk_kick_exempt LIMIT ? OFFSET ?";
 		final String sqlCountCommand = "SELECT COUNT(*) FROM afk_kick_exempt";
 		int offset = pageSize * (pageIndex - 1);
-		this.getPlugin().getLogger().log(Level.FINE, "Offset for Pagination is [" + offset + "].");
+		LogUtils.debug("Offset for Pagination is [" + offset + "].");
 
 		return CompletableFuture.supplyAsync(() -> {
 			EntityExemptList result = new EntityExemptList();
@@ -181,28 +179,28 @@ public class AfkDatabaseManager extends DatabaseManager implements IExemptDataba
 				}
 				
 			} catch (SQLException e) {
-				this.getPlugin().getLogger().log(Level.WARNING, "Unable to execute query for AFK kick check.");
-				this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+				LogUtils.warn("Unable to execute query for AFK kick check.");
+				LogUtils.warn(e.getMessage());
 			} finally {
 				if (set != null) {
 					try {
 						set.close();
 					} catch (SQLException e) {
-						e.printStackTrace();
+						LogUtils.warn(e.getMessage());
 					}
 				}
 				if (countSet != null) {
 					try {
 						countSet.close();
 					} catch (SQLException e) {
-						e.printStackTrace();
+						LogUtils.warn(e.getMessage());
 					}
 				}
 				if (countStatement != null) {
 					try {
 						countStatement.close();
 					} catch (SQLException e) {
-						e.printStackTrace();
+						LogUtils.warn(e.getMessage());
 					}
 				}
 			}

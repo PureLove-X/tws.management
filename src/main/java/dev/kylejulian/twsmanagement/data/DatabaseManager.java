@@ -1,6 +1,7 @@
 package dev.kylejulian.twsmanagement.data;
 
 import dev.kylejulian.twsmanagement.data.interfaces.IDatabaseManager;
+import dev.kylejulian.twsmanagement.util.LogUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
 
 public abstract class DatabaseManager implements IDatabaseManager {
 
@@ -24,7 +24,7 @@ public abstract class DatabaseManager implements IDatabaseManager {
 	/**
 	 * Setups the Default Database schema for the Database Manager
 	 *
-     * @return CompletableFuture<Void> which will setup the Database schema
+     * @return CompletableFuture<Void> which will set up the Database schema
      */
 	public abstract @NotNull CompletableFuture<Void> setupDefaultSchema();
 
@@ -43,10 +43,10 @@ public abstract class DatabaseManager implements IDatabaseManager {
 	}
 
 	/**
-	 * Executes a sql command with specified params. The params must be in the order they appear in the sql string.
-	 * @param sql Sql command to execute
-	 * @param params Array of collections intended to be parameterised in the Sql query
-	 * @return A CompletableFuture<Void> with the Sql command executed
+	 * Executes a SQL command with specified params. The params must be in the order they appear in the SQL string.
+	 * @param sql SQL command to execute
+	 * @param params Array of collections intended to be parameterized in the SQL query
+	 * @return A CompletableFuture<Void> with the SQL command executed
 	 */
 	protected CompletableFuture<Void> execute(final String sql, final Object[] params) {
 		return CompletableFuture.runAsync(() -> {
@@ -59,21 +59,21 @@ public abstract class DatabaseManager implements IDatabaseManager {
 
 				statement.execute();
 			} catch (SQLException e) {
-				this.getPlugin().getLogger().log(Level.WARNING, "Unable to execute query.");
-				this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+				LogUtils.warn("Unable to execute query.");
+				LogUtils.warn(e.getMessage());
 			} catch (Exception e) {
-				this.getPlugin().getLogger().log(Level.SEVERE, "Unable to execute query for execute.");
-				e.printStackTrace();
+				LogUtils.error("Unable to execute query for execute");
+				LogUtils.error(e.getMessage());
 			}
 		});
 	}
 
 	/**
-	 * Executes a sql command with specified params. The params must be in the order they appear in the sql string.
+	 * Executes a SQL command with specified params. The params must be in the order they appear in the SQL string.
 	 * Returns whether or not at least one row existed with for the given query.
-	 * @param sql Sql command to execute
-	 * @param params Array of collections intended to be parameterised in the Sql query
-	 * @return A CompletableFuture<Boolean> with the Sql command executed
+	 * @param sql SQL command to execute
+	 * @param params Array of collections intended to be parameterized in the SQL query
+	 * @return A CompletableFuture<Boolean> with the SQL command executed
 	 */
 	protected CompletableFuture<Boolean> exists(final String sql, final Object[] params) {
 		return CompletableFuture.supplyAsync(() -> {
@@ -96,17 +96,18 @@ public abstract class DatabaseManager implements IDatabaseManager {
 
 				result = count >= 1;
 			} catch (SQLException e) {
-				this.getPlugin().getLogger().log(Level.WARNING, "Unable to execute query for exists check.");
-				this.getPlugin().getLogger().log(Level.WARNING, e.getMessage());
+				LogUtils.warn("Unable to execute query for exists check.");
+				LogUtils.warn(e.getMessage());
 			} catch (Exception e) {
-				this.getPlugin().getLogger().log(Level.SEVERE, "Unable to execute query for exists check.");
-				e.printStackTrace();
+				LogUtils.error("Unable to execute query for exists check.");
+				LogUtils.error(e.getMessage());
 			} finally {
 				if (set != null) {
 					try {
 						set.close();
 					} catch (SQLException e) {
-						e.printStackTrace();
+						LogUtils.warn("Unable to execute query for exists check.");
+						LogUtils.warn(e.getMessage());
 					}
 				}
 			}
@@ -116,10 +117,10 @@ public abstract class DatabaseManager implements IDatabaseManager {
 	}
 
 	/**
-	 * Adds the provided Object params to the Sql statement
-	 * @param statement Sql command to add the parameters
+	 * Adds the provided Object params to the SQL statement
+	 * @param statement SQL command to add the parameters
 	 * @param params The parameters that are used in the query
-	 * @throws SQLException If the number of query parameters in the sql statement do not match the number of params
+	 * @throws SQLException If the number of query parameters in the SQL statement do not match the number of params
 	 * provided in the specified params
 	 */
 	private void buildQueryParameters(final PreparedStatement statement, final Object[] params) throws SQLException {

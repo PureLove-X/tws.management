@@ -140,7 +140,8 @@ public class PlayerListener implements Listener {
 			Player player = this.plugin.getServer().getPlayer(playerId);
 			if (player != null) {
 				AfkConfigModel afkConfig = configManager.getConfig().getAfkConfig();
-				if (afkConfig.getSendPlayerAfkMessage()) {
+                assert afkConfig != null;
+                if (afkConfig.getSendPlayerAfkMessage()) {
 					TextComponent youAreAfk = Component.text()
 						.color(NamedTextColor.DARK_RED)
 						.append(Component.text("You are now AFK"))
@@ -156,7 +157,7 @@ public class PlayerListener implements Listener {
 	}
 
 	/**
-	 * Creates and Starts a Afk Manager task, which determines when a Player is actually afk
+	 * Creates and Starts an Afk Manager task, which determines when a Player is actually afk
 	 * @param playerId Player to create the Afk Manager task for
 	 * @return Task Id
 	 */
@@ -165,7 +166,7 @@ public class PlayerListener implements Listener {
 	}
 
 	/**
-	 * Creates and Starts a Afk Manager task, which determines when a Player is actually afk. This overload
+	 * Creates and Starts an Afk Manager task, which determines when a Player is actually afk. This overload
 	 * providers a boolean parameter which allows you to specify if the Player had requested the event, through /afk
 	 * @param playerId Player to create the Afk Manager task for
 	 * @param alreadyAfk Flag whether or not the Player has request to be Afk

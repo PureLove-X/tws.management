@@ -26,7 +26,7 @@ import org.bukkit.event.player.PlayerUnleashEntityEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /*
- * Listener for Player Events, used to send the AFK Cancelled events of Players
+ * Listener for Player Events, used to send the AFK Canceled events of Players
  */
 public record AfkEventListener(JavaPlugin plugin,
 							   AfkConfigModel afkConfig) implements Listener {

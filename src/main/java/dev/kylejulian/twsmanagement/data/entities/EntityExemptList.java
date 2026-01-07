@@ -11,7 +11,7 @@ public class EntityExemptList {
 
     /**
      * Get Player Ids retrieved from the Database
-     * @return Array of Player UUIDs
+     * @return ArrayList of Player UUIDs
      */
     public ArrayList<UUID> getPlayerIds() {
         return this.playerIds;

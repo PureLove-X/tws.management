@@ -50,7 +50,7 @@ public class AfkManager implements Runnable {
 		int afkKickTime = this.afkConfig.getKickTimeMinutes();
 		
 		Player player = this.plugin.getServer().getPlayer(this.playerId);
-		if (player == null) { // Player does not exist? Should not be possible since this Runnable would be cancelled
+		if (player == null) { // Player does not exist? Should not be possible since this Runnable would be canceled
 			return;
 		}
 		

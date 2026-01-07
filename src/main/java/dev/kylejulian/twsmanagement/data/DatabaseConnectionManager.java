@@ -1,5 +1,6 @@
 package dev.kylejulian.twsmanagement.data;
 
+import dev.kylejulian.twsmanagement.util.LogUtils;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import dev.kylejulian.twsmanagement.configuration.DatabaseConfigModel;
@@ -30,7 +31,8 @@ public class DatabaseConnectionManager {
 		try {
 			this.connectionPool.close();
 		} catch (SQLException exception) {
-			exception.printStackTrace();
+			LogUtils.error("Error closing database");
+			LogUtils.error(exception.getMessage());
 		}
 	}
 }

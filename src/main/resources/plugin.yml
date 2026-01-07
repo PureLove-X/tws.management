@@ -1,15 +1,13 @@
 main: ${PACKAGE}.${NAME}
 name: ${NAME}
 version: "${PLUGINVERSION}"
-author: JuHDude
+authors: [JuHDude, PureLove]
 prefix: TWSManagement
 description: Bespoke plugin used to provide management functionalities for the tws.gg Minecraft Server
-api-version: "1.20"
+api-version: "1.21"
 database: true
 depend:
 - TAB
-softdepend:
-- LuckPerms
 commands:
   afk:
     description: To go afk. Specify the exempt keyword and a Player name to prevent them from being kicked for inactivity.
@@ -24,15 +22,6 @@ commands:
     usage: |
       /<command>
       Example: /<command>
-  exe:
-    description: To add a player to whitelist exempt list. Specify 'list' to display everyone in the list. Use the command again if you want to remove them from the exempt list
-    usage: |
-      /<command> [add|remove|list]
-      Example: /<command> add Player1
-      Example: /<command> remove Player1
-      Example: /<command> list
-      Example: /<command> clear
-    permission: tws.exempt
 permissions:
   tws.*:
     description: Gives access to all commands from the TWS plugin.
@@ -40,5 +29,3 @@ permissions:
       tws.afk.exempt: true
   tws.afk.exempt:
     description: Gives access to add and remove players to the inactivity kick exempt list.
-  tws.exe.auto:
-    description: A player with this permission node will not be removed from the whitelisted automatically

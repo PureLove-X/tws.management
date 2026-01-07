@@ -2,6 +2,7 @@ package dev.kylejulian.twsmanagement.player.hud;
 
 import dev.kylejulian.twsmanagement.configuration.HudConfigModel;
 import dev.kylejulian.twsmanagement.player.hud.events.HudEvent;
+import dev.kylejulian.twsmanagement.util.LogUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -11,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class HudListener implements Listener {
 
@@ -46,8 +46,7 @@ public class HudListener implements Listener {
             if (!this.playerTask.containsKey(playerId)) {
                 Integer refreshRateTicks = this.hudConfig.getRefreshRateTicks();
                 if (refreshRateTicks < 1) {
-                    this.plugin.getLogger().log(Level.WARNING,
-                            "Invalid configuration for Hud Refresh Rate. Setting Refresh Rate to 10 ticks.");
+                    LogUtils.warn("Invalid configuration for Hud Refresh Rate. Setting Refresh Rate to 10 ticks.");
                     refreshRateTicks = 10;
                 }
 

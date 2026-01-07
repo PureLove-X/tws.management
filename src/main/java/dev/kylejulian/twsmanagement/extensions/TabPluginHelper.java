@@ -2,6 +2,7 @@ package dev.kylejulian.twsmanagement.extensions;
 
 import java.util.UUID;
 
+import dev.kylejulian.twsmanagement.util.LogUtils;
 import me.neznamy.tab.api.TabAPI;
 import me.neznamy.tab.api.TabPlayer;
 import me.neznamy.tab.api.tablist.TabListFormatManager;
@@ -17,7 +18,7 @@ public class TabPluginHelper {
 		TabPlayer player = api.getPlayer(playerId);
 
 		if (player == null) {
-			// TODO: Log warning
+			LogUtils.error("Player is null");
 			return;
 		}
 
@@ -26,7 +27,8 @@ public class TabPluginHelper {
 		MiniMessage mm = MiniMessage.miniMessage();
 		String suffixText =  mm.serialize(suffix);
 		// Revisit
-		tablistFormatManager.setSuffix(player, " &8[&cAFK&8]");
+        assert tablistFormatManager != null;
+        tablistFormatManager.setSuffix(player, " &8[&cAFK&8]");
 	}
 
 	public static void resetTabSuffix(@NotNull UUID playerId) {
@@ -34,12 +36,13 @@ public class TabPluginHelper {
 		TabPlayer player = api.getPlayer(playerId);
 
 		if (player == null) {
-			// TODO: Log warning
+			LogUtils.error("Player is null");
 			return;
 		}
 
 		TabListFormatManager tablistFormatManager = api.getTabListFormatManager();
-		tablistFormatManager.setSuffix(player, "");
+        assert tablistFormatManager != null;
+        tablistFormatManager.setSuffix(player, "");
 	}
 
 	public static boolean hasTabSuffix(@NotNull UUID playerId) {
@@ -51,7 +54,8 @@ public class TabPluginHelper {
 		}
 
 		TabListFormatManager tablistFormatManager = api.getTabListFormatManager();
-		String suffix = tablistFormatManager.getCustomSuffix(player);
+        assert tablistFormatManager != null;
+        String suffix = tablistFormatManager.getCustomSuffix(player);
 
 		return suffix != null && suffix.contains("AFK");
 	}

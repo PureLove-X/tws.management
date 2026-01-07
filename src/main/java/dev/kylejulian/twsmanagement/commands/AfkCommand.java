@@ -6,6 +6,7 @@ import dev.kylejulian.twsmanagement.data.MojangApi;
 import dev.kylejulian.twsmanagement.data.entities.EntityExemptList;
 import dev.kylejulian.twsmanagement.data.interfaces.IExemptDatabaseManager;
 import dev.kylejulian.twsmanagement.extensions.ExemptListChatHelpers;
+import dev.kylejulian.twsmanagement.util.LogUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -20,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
 
 public record AfkCommand(JavaPlugin plugin,
                          IExemptDatabaseManager afkDatabaseManager,
@@ -43,7 +43,7 @@ public record AfkCommand(JavaPlugin plugin,
 
                 this.plugin.getServer().getScheduler().runTask(this.plugin, afkEventTask);
             } else {
-                this.plugin.getServer().getLogger().log(Level.WARNING, "You must be a Player to use this command!");
+                LogUtils.warn("You must be a player to use this command!");
             }
         } else if (args.length > 1) {
             String base = args[0];
@@ -94,8 +94,8 @@ public record AfkCommand(JavaPlugin plugin,
         playerIdFuture
                 .thenComposeAsync(afkDatabaseManager::isExempt)
                 .thenCombineAsync(playerIdFuture, (isExempt, uuid) -> new ExemptFutureModel(uuid, isExempt))
-                .thenComposeAsync(whitelistExemptFutureModel -> {
-                    if (whitelistExemptFutureModel.getIsExempt()) {
+                .thenComposeAsync(afkExemptFutureModel -> {
+                    if (afkExemptFutureModel.getIsExempt()) {
                         // Exempt
                         if (command.equalsIgnoreCase("add")) {
                             TextComponent targetAlreadyExempt = Component.text()
@@ -118,7 +118,7 @@ public record AfkCommand(JavaPlugin plugin,
 
                         this.plugin.getServer().getScheduler().runTask(this.plugin, () -> sender.sendMessage(targetRemoved));
 
-                        return afkDatabaseManager.remove(whitelistExemptFutureModel.getPlayerId());
+                        return afkDatabaseManager.remove(afkExemptFutureModel.getPlayerId());
                     } else {
                         // Not exempt
                         if (command.equalsIgnoreCase("add")) {
@@ -130,7 +130,7 @@ public record AfkCommand(JavaPlugin plugin,
                                 .build();
 
                             this.plugin.getServer().getScheduler().runTask(this.plugin, () -> sender.sendMessage(targetAdded));
-                            return afkDatabaseManager.add(whitelistExemptFutureModel.getPlayerId());
+                            return afkDatabaseManager.add(afkExemptFutureModel.getPlayerId());
                         }
                         
                         TextComponent targetIsNotAfkList = Component.text()
