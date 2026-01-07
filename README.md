@@ -1,7 +1,7 @@
 # TWSManagement
 
 This is an continuation by request.
-[Originally by kylejuliandev[(https://github.com/kylejuliandev/tws.management)
+[Originally by kylejuliandev](https://github.com/kylejuliandev/tws.management)
 
 ## General
 
@@ -50,5 +50,6 @@ The following symbols are used to indicate if a dependency (plugin also running 
 To run this plugin you must have the following dependencies also running on your Minecraft Server:
 
 - ❗ [TAB](https://www.mc-market.org/resources/20631/) - Displays the AFK suffix tag next to your name, in the tab leaderboard.
+
 
 
