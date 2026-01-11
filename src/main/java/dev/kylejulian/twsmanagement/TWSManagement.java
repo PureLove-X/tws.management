@@ -72,7 +72,7 @@ public class TWSManagement extends JavaPlugin {
 		Objects.requireNonNull(this.getCommand("afk"))
 				.setTabCompleter(new AfkTabCompleter(this));
 		Objects.requireNonNull(this.getCommand("hud"))
-				.setExecutor(new HudCommand(this, hudDatabaseManager));
+				.setExecutor(new HudCommand(this, hudDatabaseManager, configManager));
 
 		stopWatch.stop();
 		LogUtils.success("Plugin started in " + stopWatch.getTime() + "ms");

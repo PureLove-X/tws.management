@@ -1,4 +1,4 @@
-main: ${PACKAGE}.${NAME}
+main: ${MAIN_CLASS}
 name: ${NAME}
 version: "${PLUGINVERSION}"
 authors: [JuHDude, PureLove]

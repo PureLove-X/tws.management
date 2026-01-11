@@ -4,6 +4,7 @@ plugins {
     id 'maven-publish'
     id 'com.gradleup.shadow' version '9.3.1'
 }
+group = "dev.kylejulian.twsmanagement"
 
 def gitRef = System.getenv("GITHUB_REF_NAME")
 version = gitRef != null && gitRef.startsWith("v")
@@ -46,7 +47,9 @@ tasks.withType(JavaCompile).configureEach {
 // Patch plugin.yml file
 processResources {
     filesMatching("**/plugin.yml") {
-        expand ( PLUGINVERSION: version, PACKAGE: project.group.toString(), NAME: rootProject.name )
+        expand ( PLUGINVERSION: version,
+                MAIN_CLASS: "dev.kylejulian.twsmanagement.TWSManagement",
+                NAME: rootProject.name)
     }
 }
 

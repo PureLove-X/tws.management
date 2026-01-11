@@ -110,9 +110,17 @@ public class ConfigurationManager {
             HudConfigModel hudConfigModel = new HudConfigModel();
             hudConfigModel.setEnabled(true);
             hudConfigModel.setRefreshRateTicks(20); // Every second
-
+            hudConfigModel.setAutoEnableOnJoin(true);
             configModel.setHudConfig(hudConfigModel);
             saveRequired = true;
+        }
+        // Patch existing Hud configuration (non-destructive)
+        HudConfigModel hudConfig = configModel.getHudConfig();
+        if (hudConfig != null) {
+            if (!hudConfig.hasAutoEnableOnJoin()) {
+                hudConfig.setAutoEnableOnJoin(true);
+                saveRequired = true;
+            }
         }
 
         // Set default Database configuration

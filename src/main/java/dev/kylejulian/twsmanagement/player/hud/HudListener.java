@@ -3,6 +3,8 @@ package dev.kylejulian.twsmanagement.player.hud;
 import dev.kylejulian.twsmanagement.configuration.HudConfigModel;
 import dev.kylejulian.twsmanagement.player.hud.events.HudEvent;
 import dev.kylejulian.twsmanagement.util.LogUtils;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -45,7 +47,7 @@ public class HudListener implements Listener {
         if (e.getEnabled()) { // Player wants task enabled
             if (!this.playerTask.containsKey(playerId)) {
                 Integer refreshRateTicks = this.hudConfig.getRefreshRateTicks();
-                if (refreshRateTicks < 1) {
+                if (refreshRateTicks == null || refreshRateTicks < 1) {
                     LogUtils.warn("Invalid configuration for Hud Refresh Rate. Setting Refresh Rate to 10 ticks.");
                     refreshRateTicks = 10;
                 }
@@ -61,9 +63,17 @@ public class HudListener implements Listener {
             if (this.playerTask.containsKey(playerId)) {
                 Integer taskId = this.playerTask.get(playerId);
                 this.plugin.getServer().getScheduler().cancelTask(taskId);
-
                 this.playerTask.remove(playerId);
             }
+
+            // Clear the action bar immediately (prevents the fade-out lingering)
+            this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                Player player = this.plugin.getServer().getPlayer(playerId);
+                if (player != null) {
+                    player.sendActionBar(Component.empty());
+                }
+            });
         }
+
     }
 }

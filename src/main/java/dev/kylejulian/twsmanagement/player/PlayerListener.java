@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import dev.kylejulian.twsmanagement.configuration.HudConfigModel;
 import dev.kylejulian.twsmanagement.data.interfaces.IExemptDatabaseManager;
 import dev.kylejulian.twsmanagement.data.interfaces.IHudDatabaseManager;
 import dev.kylejulian.twsmanagement.player.hud.events.HudEvent;
@@ -68,12 +69,34 @@ public class PlayerListener implements Listener {
 
 		this.playerAfkManagerTasks.put(playerId, taskId);
 
-		CompletableFuture<Boolean> isHudEnabledFuture = this.hudDatabaseManager.isEnabled(playerId);
-		isHudEnabledFuture.thenAcceptAsync(result -> {
-			if (result) {
-				// Raise Hud Event synchronously
+		CompletableFuture<Boolean> isHudEnabledFuture =
+				this.hudDatabaseManager.isEnabled(playerId);
+
+		isHudEnabledFuture.thenAcceptAsync(hasPreference -> {
+
+			HudConfigModel hudConfig = this.configManager
+					.getConfig()
+					.getHudConfig();
+
+			if (hudConfig == null || !hudConfig.getEnabled()) {
+				return;
+			}
+
+			boolean autoEnable = Boolean.TRUE.equals(hudConfig.getAutoEnableOnJoin());
+			boolean shouldEnableHud;
+
+			if (autoEnable) {
+				// default ON, player opts out
+				shouldEnableHud = !hasPreference;
+			} else {
+				// default OFF, player opts in
+				shouldEnableHud = hasPreference;
+			}
+
+			if (shouldEnableHud) {
 				plugin.getServer().getScheduler().runTask(plugin, () ->
-						plugin.getServer().getPluginManager().callEvent(new HudEvent(playerId, true)));
+						plugin.getServer().getPluginManager()
+								.callEvent(new HudEvent(playerId, true)));
 			}
 		});
 	}

@@ -11,7 +11,8 @@
 	},
 	"hudConfig": {
 		"enabled": true,
-		"refreshRateTicks": 10
+		"refreshRateTicks": 10,
+		"autoEnableOnJoin" : true
 	},
 	"databaseConfig": {
 		"name": "tws-local.db",
