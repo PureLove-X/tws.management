@@ -2,7 +2,6 @@ package dev.kylejulian.twsmanagement.commands.tabcompleters;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -13,30 +12,45 @@ import org.jetbrains.annotations.NotNull;
 public record AfkTabCompleter(JavaPlugin plugin) implements TabCompleter {
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
-                                      @NotNull String alias, String[] args) {
+    public List<String> onTabComplete(
+            @NotNull CommandSender sender,
+            @NotNull Command command,
+            @NotNull String alias,
+            String[] args
+    ) {
+        ArrayList<String> suggestions = new ArrayList<>();
 
-        ArrayList<String> autoCompleteList = new ArrayList<>();
-
-        // First arg is a space
         if (args.length == 1) {
-            autoCompleteList.add("exempt");
-            return autoCompleteList;
+            suggestions.add("exempt");
+            suggestions.add("kick");
+            return suggestions;
         }
 
-        if (args.length == 2) {
-            autoCompleteList.add("add");
-            autoCompleteList.add("remove");
-            autoCompleteList.add("list");
-            autoCompleteList.add("clear");
-            return autoCompleteList;
+        // /afk exempt <sub>
+        if (args.length == 2 && args[0].equalsIgnoreCase("exempt")) {
+            suggestions.add("add");
+            suggestions.add("remove");
+            suggestions.add("list");
+            suggestions.add("clear");
+            return suggestions;
         }
 
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
-            String playerName = PlainTextComponentSerializer.plainText().serialize(player.displayName());
-            autoCompleteList.add(playerName);
+        // /afk kick <player>
+        if (args.length == 2 && args[0].equalsIgnoreCase("kick")) {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                suggestions.add(player.getName());
+            }
+            return suggestions;
         }
 
-        return autoCompleteList;
+        // /afk exempt add/remove <player>
+        if (args.length == 3 && args[0].equalsIgnoreCase("exempt")) {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                suggestions.add(player.getName());
+            }
+            return suggestions;
+        }
+
+        return suggestions;
     }
 }

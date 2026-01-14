@@ -1,0 +1,23 @@
+{
+  "firstJoinMessage": {
+    "enabled": true,
+    "message": "@file:join_msg.txt"
+  },
+
+  "giveWrittenBooks": {
+    "enabled": true,
+    "bookFiles": [
+      "Example.txt"
+    ]
+  },
+
+  "teleport": {
+    "enabled": true,
+    "world": "world",
+    "x": 0,
+    "y": 65,
+    "z": 0,
+    "yaw": 1.2,
+    "pitch": 11.7
+  }
+}

@@ -1,0 +1,17 @@
+# This file isn't necessary for doing messages, just more convenient for long ones.
+# and for showing off the Viewer/Others mode for showing one message to the new player (viewer) and a different message to the rest of the server.
+# View mode isn't necessary to use and can be omitted
+#
+#
+# This message is shown when a player joins for the first time
+# Tags supported:
+# <Gradient:start:end|text>
+# <hover:text|body>
+# <click:/cmd|body>
+
+Viewer:
+<hover:&aUse the welcome book in your inventory to help you better navigate the server!|&2Welcome &d&l%player_name% &2to the <Gradient:#FF9C3C:#75E34F|The Wooden Spoon!>>
+
+Others:
+&a%player_name% <Gradient:#FF9C3C:#75E34F|has joined for the first time!!>
+&#F2A1FFLet’s give them a warm welcome!

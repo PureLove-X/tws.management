@@ -1,0 +1,6 @@
+&6&lOverworld Portal Coordinates
+&7──────────────────────────────
+
+&7 X: &f%Overworld_X%   &7Z: &f%Overworld_Z%
+
+&7 This is the ideal location for your overworld portal

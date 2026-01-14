@@ -1,10 +1,27 @@
 {
 	"afkConfig": {
-		"timeMinutes": 1,
-		"kickTimeMinutes": 2,
+		"timeMinutes": 15,
+		"kickTimeMinutes": 60,
 		"kickMessage": "You have been kicked for being AFK for too long!",
-		"playerCountNeededForKick": 0,
-		"events": ["onPlayerChat", "onPlayerInteractEntity", "onPlayerInteract", "onPlayerBedEnter", "onPlayerChangedWorld", "onPlayerEditBook", "onPlayerDropItem", "onPlayerItemBreak", "onPlayerShearEntity", "onPlayerToggleFlight", "onPlayerToggleSprint", "onPlayerToggleSneak", "onPlayerUnleashEntity", "onPlayerBucketFill", "onPlayerBucketEmpty", "onPlayerMove", "onPlayerExpChange"
+		"playerCountNeededForKick": 25,
+		"events": [
+			"onPlayerChat",
+			"onPlayerInteractEntity",
+			"onPlayerInteract",
+			"onPlayerBedEnter",
+			"onPlayerChangedWorld",
+			"onPlayerEditBook",
+			"onPlayerDropItem",
+			"onPlayerItemBreak",
+			"onPlayerShearEntity",
+			"onPlayerToggleFlight",
+			"onPlayerToggleSprint",
+			"onPlayerToggleSneak",
+			"onPlayerUnleashEntity",
+			"onPlayerBucketFill",
+			"onPlayerBucketEmpty",
+			"onPlayerMove",
+			"onPlayerExpChange"
 		],
 		"sendPlayerAfkMessage": true,
 		"afkKick": true
@@ -13,6 +30,14 @@
 		"enabled": true,
 		"refreshRateTicks": 10,
 		"autoEnableOnJoin" : true
+	},
+	"portalConfig": {
+		"enabled": true,
+		"netherY_Level": 127,
+		"avoidHubRadius": 100,
+		"allowNetherToOverworld": true,
+		"messageNether": "@file:portal_nether.txt",
+		"messageOverworld": "@file:portal_overworld.txt"
 	},
 	"databaseConfig": {
 		"name": "tws-local.db",

@@ -56,6 +56,12 @@ public class ConfigurationManager {
             this.plugin.saveResource(this.file.getName(), false);
         }
 
+        ensureFormatsFolder();
+
+        if (!this.file.exists()) {
+            this.plugin.saveResource(this.file.getName(), false);
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         try {
@@ -122,7 +128,19 @@ public class ConfigurationManager {
                 saveRequired = true;
             }
         }
+        // Set default Portal configuration
+        if (configModel.getPortalConfig() == null) {
+            PortalConfigModel portal = new PortalConfigModel();
+            portal.setEnabled(true);
+            portal.setNetherY_Level(127);
+            portal.setAvoidHubRadius(100);
+            portal.setAllowNetherToOverworld(true);
+            portal.setMessageNether("@file:portal_nether.txt");
+            portal.setMessageOverworld("@file:portal_overworld.txt");
 
+            configModel.setPortalConfig(portal);
+            saveRequired = true;
+        }
         // Set default Database configuration
         if (configModel.getDatabaseConfig() == null) {
             DatabaseConfigModel databaseConfigModel = new DatabaseConfigModel();
@@ -134,6 +152,30 @@ public class ConfigurationManager {
         }
 
         return saveRequired;
+    }
+    private void ensureFormatsFolder() {
+        File formatsDir = new File(plugin.getDataFolder(), "formats");
+
+        if (!formatsDir.exists() && !formatsDir.mkdirs()) {
+            LogUtils.error("Unable to create formats directory");
+            return;
+        }
+
+        ensureFormatFile(formatsDir, "join_msg.txt");
+        ensureFormatFile(formatsDir, "portal_nether.txt");
+        ensureFormatFile(formatsDir, "portal_overworld.txt");
+    }
+
+    private void ensureFormatFile(File formatsDir, String fileName) {
+        File target = new File(formatsDir, fileName);
+
+        if (!target.exists()) {
+            try {
+                plugin.saveResource("formats/" + fileName, false);
+            } catch (IllegalArgumentException e) {
+                LogUtils.error("Missing default format file in jar: " + fileName);
+            }
+        }
     }
 
     /**

@@ -1,0 +1,13 @@
+&bOur Rules
+
+Hey %player_name, this is the first page!
+%player_display_name - Display name.
+%player_uuid - UUID
+
+&lPlease read our rules!
+/newpage
+This is page 2 of the book!
+/newpage
+Wow, page 3 of the book!
+
+Have you tried &acolor codes&0?

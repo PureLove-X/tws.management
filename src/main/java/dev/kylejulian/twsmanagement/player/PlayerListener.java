@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import dev.kylejulian.twsmanagement.configuration.HudConfigModel;
+import dev.kylejulian.twsmanagement.configuration.*;
 import dev.kylejulian.twsmanagement.data.interfaces.IExemptDatabaseManager;
 import dev.kylejulian.twsmanagement.data.interfaces.IHudDatabaseManager;
 import dev.kylejulian.twsmanagement.player.hud.events.HudEvent;
 import dev.kylejulian.twsmanagement.afk.AfkManager;
 import dev.kylejulian.twsmanagement.afk.events.AfkCancelledEvent;
 import dev.kylejulian.twsmanagement.afk.events.AfkEvent;
-import dev.kylejulian.twsmanagement.configuration.AfkConfigModel;
 import dev.kylejulian.twsmanagement.extensions.TabPluginHelper;
+import dev.kylejulian.twsmanagement.player.join.JoinService;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -27,8 +27,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import dev.kylejulian.twsmanagement.afk.events.AfkCommandEvent;
-import dev.kylejulian.twsmanagement.configuration.ConfigModel;
-import dev.kylejulian.twsmanagement.configuration.ConfigurationManager;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerListener implements Listener {
@@ -49,21 +47,27 @@ public class PlayerListener implements Listener {
 	private final IHudDatabaseManager hudDatabaseManager;
 	private final ConfigurationManager configManager;
 	private final HashMap<UUID,Integer> playerAfkManagerTasks;
+	private final JoinConfigurationManager joinConfigManager;
 	
 	public PlayerListener(@NotNull JavaPlugin plugin,
 						  @NotNull IExemptDatabaseManager afkDatabaseManager,
 						  @NotNull IHudDatabaseManager hudDatabaseManager,
-						  @NotNull ConfigurationManager configManager) {
+						  @NotNull ConfigurationManager configManager, JoinConfigurationManager  joinConfigManager) {
 		this.plugin = plugin;
 		this.afkDatabaseManager = afkDatabaseManager;
 		this.hudDatabaseManager = hudDatabaseManager;
 		this.configManager = configManager;
+		this.joinConfigManager = joinConfigManager;
 		this.playerAfkManagerTasks = new HashMap<>();
 	}
 	
 	@EventHandler
 	public void onJoin(@NotNull PlayerJoinEvent e) {
 		Player player = e.getPlayer();
+		if (!player.hasPlayedBefore()) {
+			JoinConfigModel cfg = joinConfigManager.getConfig();
+			JoinService.runFirstJoin(plugin, player, cfg);
+		}
 		final UUID playerId = player.getUniqueId();
 		Integer taskId = this.createAndStartAfkManagerTask(playerId);
 

@@ -1,11 +1,15 @@
 package dev.kylejulian.twsmanagement.commands;
 
+import dev.kylejulian.twsmanagement.TWSManagement;
 import dev.kylejulian.twsmanagement.afk.events.AfkCommandEvent;
 import dev.kylejulian.twsmanagement.commands.models.ExemptFutureModel;
+import dev.kylejulian.twsmanagement.configuration.AfkConfigModel;
+import dev.kylejulian.twsmanagement.configuration.MessageResolver;
 import dev.kylejulian.twsmanagement.data.MojangApi;
 import dev.kylejulian.twsmanagement.data.entities.EntityExemptList;
 import dev.kylejulian.twsmanagement.data.interfaces.IExemptDatabaseManager;
 import dev.kylejulian.twsmanagement.extensions.ExemptListChatHelpers;
+import dev.kylejulian.twsmanagement.extensions.TextProcessor;
 import dev.kylejulian.twsmanagement.util.LogUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -19,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -48,6 +53,9 @@ public record AfkCommand(JavaPlugin plugin,
         } else if (args.length > 1) {
             String base = args[0];
             String command = args[1];
+            if (args.length == 2 && args[0].equalsIgnoreCase("kick")) {
+                return executeKickSubcommand(sender, args[1]);
+            }
 
             if (!base.equalsIgnoreCase("exempt")) {
                 TextComponent commandIsNotRecognised = Component.text()
@@ -84,6 +92,56 @@ public record AfkCommand(JavaPlugin plugin,
 
             executeAddOrRemoveSubcommand(sender, args[2], command);
         }
+
+        return true;
+    }
+    private boolean executeKickSubcommand(CommandSender sender, String targetName) {
+
+        if (!sender.hasPermission("tws.afk.kick") && !sender.isOp()) {
+            sender.sendMessage(
+                    Component.text("You do not have permission to do that.")
+                            .color(NamedTextColor.RED)
+            );
+            return true;
+        }
+
+        Player target = plugin.getServer().getPlayerExact(targetName);
+
+        if (target == null) {
+            sender.sendMessage(
+                    Component.text("That player is not online.")
+                            .color(NamedTextColor.RED)
+            );
+            return true;
+        }
+
+        AfkConfigModel afkConfig =
+                ((TWSManagement) plugin).getConfigurationManager()
+                        .getConfig()
+                        .getAfkConfig();
+
+        MessageResolver.ResolvedMessage resolved =
+                MessageResolver.resolve(plugin, Objects.requireNonNull(afkConfig).getKickMessage());
+
+        String message =
+                resolved.viewer() != null
+                        ? resolved.viewer()
+                        : resolved.fallback();
+
+        Component kickMessage = TextProcessor.parse(
+                message,
+                target,
+                target
+        );
+
+        plugin.getServer().getScheduler()
+                .runTask(plugin, () -> target.kick(kickMessage));
+
+        sender.sendMessage(
+                Component.text("Kicked ")
+                        .append(Component.text(target.getName()))
+                        .color(NamedTextColor.GREEN)
+        );
 
         return true;
     }

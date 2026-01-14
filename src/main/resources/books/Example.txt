@@ -1,0 +1,43 @@
+&d&lFeatures Demo
+&dPureLove
+<Gradient:#FF5F6D:#FFC371|TWS Management Plugin>
+
+This book acts as a demo to show what kinds of things books can do.
+
+<Hover:"This book showcases join messages and written books."|&2Hover over text to reveal more information.>
+
+<Link:https://github.com/PureLove-X/tws.management|<Hover:"Opens the project repository."|&#2170B5&nView documentation and updates>>
+
+
+
+More examples on the next page
+/newpage
+&#CC5500&l&nInteractive Text
+
+<Hover:"Hover text can explain things without clutter."|Hover effects add extra detail.>
+
+<Click:/help|<Hover:"&bRuns the /help command."|Click here to run a command.>>
+
+<Link:https://example.com|<Hover:"&5External websites open in your browser."|Click here to open a website.>>
+
+Interactivity works in books, chat, and join messages.
+
+/newpage
+&#EF476F&lStyling & Formatting
+
+&lBold text&r
+&oItalic text&r
+&nUnderlined text&r
+
+Legacy colors &7still work&r
+Hex colors like &#FF00FFthis&r too.
+
+<Hover:"Formatting stacks cleanly."|<Gradient:#06D6A0:#1B9AAA|Decorations, colors, and effects can be combined.>>
+
+/newpage
+&#118AB2&n&lFinal Notes
+
+This book demonstrates book features only.
+
+To see how it's written, open the
+<Hover:"&2/TWSManagement/books&r in the plugin folder!"|&3&nexample.txt&r file>

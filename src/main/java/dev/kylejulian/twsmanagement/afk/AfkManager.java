@@ -2,9 +2,10 @@ package dev.kylejulian.twsmanagement.afk;
 
 import dev.kylejulian.twsmanagement.afk.events.AfkEvent;
 import dev.kylejulian.twsmanagement.configuration.AfkConfigModel;
+import dev.kylejulian.twsmanagement.configuration.MessageResolver;
 import dev.kylejulian.twsmanagement.data.interfaces.IExemptDatabaseManager;
+import dev.kylejulian.twsmanagement.extensions.TextProcessor;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -69,7 +70,7 @@ public class AfkManager implements Runnable {
 				if (canKickPlayer(afkKickTime, afkTime)) {
 					// Player must be kicked synchronously
 					plugin.getServer().getScheduler()
-							.runTask(this.plugin, () -> player.kick(getKickMessageComponent(afkConfig)));
+							.runTask(this.plugin, () -> player.kick(getKickMessageComponent(player)));
 				}
 			}
 		});
@@ -98,8 +99,23 @@ public class AfkManager implements Runnable {
 		this.afkMinutes = this.afkMinutes + 1;
 	}
 
-	private TextComponent getKickMessageComponent(AfkConfigModel afkConfig) {
-		String message = afkConfig.getKickMessage();
-		return Component.text(message);
+	private Component getKickMessageComponent(Player player) {
+		String raw = this.afkConfig.getKickMessage();
+
+		MessageResolver.ResolvedMessage resolved =
+				MessageResolver.resolve(this.plugin, raw);
+
+		String message =
+				resolved.viewer() != null
+						? resolved.viewer()
+						: resolved.fallback();
+
+		return TextProcessor.parse(
+				message,
+				player, // viewer
+				player  // sender
+		);
 	}
+
+
 }

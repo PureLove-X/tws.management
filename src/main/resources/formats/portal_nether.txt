@@ -1,0 +1,17 @@
+&6&lLinking Instructions
+&7──────────────────────
+
+&6 1.) &7Build the portal where you ran the command
+&6 2.) &7Light the portal but &c&ldon't go through!
+&6 3.) &7Travel to the nether &8(not via your portal)
+&6 4.) &7Build a portal at the coordinates below
+&6 5.) &7Light it and go through to finish linking
+
+&6&lNether Portal
+&7──────────────────────
+
+&7 X: &f%Nether_X%   &7Y: &f%Nether_Y%   &7Z: &f%Nether_Z%
+&7 Tunnel: &a%Nether_Tunnel%
+&7 Facing: &a%Nether_Facing%
+
+&r

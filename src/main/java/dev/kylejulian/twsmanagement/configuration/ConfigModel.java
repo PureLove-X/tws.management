@@ -9,6 +9,7 @@ public class ConfigModel {
 	private NightResetConfigModel nightResetConfig;
 	private DatabaseConfigModel databaseConfig;
 	private HudConfigModel hudConfig;
+	private PortalConfigModel portalConfig;
 
 	public @Nullable AfkConfigModel getAfkConfig() { return this.afkConfig; }
 
@@ -19,6 +20,9 @@ public class ConfigModel {
 	}
 
 	public @Nullable HudConfigModel getHudConfig() { return this.hudConfig; }
+	public PortalConfigModel getPortalConfig() {
+		return portalConfig;
+	}
 	
 	public void setAfkConfig(@NotNull AfkConfigModel afkConfig) {
 		this.afkConfig = afkConfig;
@@ -33,4 +37,7 @@ public class ConfigModel {
 	}
 
 	public void setHudConfig(@NotNull HudConfigModel hudConfig) { this.hudConfig = hudConfig; }
+	public void setPortalConfig(@NotNull PortalConfigModel portalConfig) { this.portalConfig = portalConfig; }
+
+
 }

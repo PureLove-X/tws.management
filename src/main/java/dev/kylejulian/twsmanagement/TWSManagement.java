@@ -3,7 +3,10 @@ package dev.kylejulian.twsmanagement;
 import dev.kylejulian.twsmanagement.afk.AfkEventListener;
 import dev.kylejulian.twsmanagement.commands.AfkCommand;
 import dev.kylejulian.twsmanagement.commands.HudCommand;
+import dev.kylejulian.twsmanagement.commands.JoinCommand;
+import dev.kylejulian.twsmanagement.commands.PortalCommand;
 import dev.kylejulian.twsmanagement.commands.tabcompleters.AfkTabCompleter;
+import dev.kylejulian.twsmanagement.commands.tabcompleters.JoinTabCompleter;
 import dev.kylejulian.twsmanagement.configuration.*;
 import dev.kylejulian.twsmanagement.data.DatabaseConnectionManager;
 import dev.kylejulian.twsmanagement.data.MojangApi;
@@ -25,10 +28,12 @@ import java.util.concurrent.ExecutionException;
 public class TWSManagement extends JavaPlugin {
 
     private final ConfigurationManager configManager;
-    private DatabaseConnectionManager databaseConnectionManager;
+    private JoinConfigurationManager joinConfigManager;
+	private DatabaseConnectionManager databaseConnectionManager;
 
 	public TWSManagement() {
     	this.configManager = new ConfigurationManager(this, "config.json");
+
     }
 	
 	@Override
@@ -38,6 +43,8 @@ public class TWSManagement extends JavaPlugin {
 		LogUtils.init(this);
 
 		this.configManager.reload();
+		this.joinConfigManager = new JoinConfigurationManager(this, "join.json");
+		this.joinConfigManager.reload();
 		LogUtils.info("Plugin configuration loaded in " + stopWatch.getTime() + "ms");
 
 		ConfigModel config = this.configManager.getConfig();
@@ -60,9 +67,10 @@ public class TWSManagement extends JavaPlugin {
 
 		runDefaultSchemaSetup(new IDatabaseManager[] {afkDatabaseManager, hudDatabaseManager }, stopWatch);
 
-		this.getServer().getPluginManager().registerEvents(new PlayerListener(this, afkDatabaseManager, hudDatabaseManager, this.configManager), this);
+		this.getServer().getPluginManager().registerEvents(new PlayerListener(this, afkDatabaseManager, hudDatabaseManager, this.configManager, this.joinConfigManager), this);
 		this.getServer().getPluginManager().registerEvents(new AfkEventListener(this, afkConfig), this);
 		this.getServer().getPluginManager().registerEvents(new HudListener(this, hudConfig), this);
+
 
 		LogUtils.info("Plugin Events have been registered by " + stopWatch.getTime() + "ms");
 
@@ -73,6 +81,11 @@ public class TWSManagement extends JavaPlugin {
 				.setTabCompleter(new AfkTabCompleter(this));
 		Objects.requireNonNull(this.getCommand("hud"))
 				.setExecutor(new HudCommand(this, hudDatabaseManager, configManager));
+		Objects.requireNonNull(this.getCommand("tws"))
+				.setExecutor(new JoinCommand(this));
+		Objects.requireNonNull(this.getCommand("tws"))
+				.setTabCompleter(new JoinTabCompleter(this));
+		Objects.requireNonNull(this.getCommand("portal")).setExecutor(new PortalCommand(this, configManager));
 
 		stopWatch.stop();
 		LogUtils.success("Plugin started in " + stopWatch.getTime() + "ms");
@@ -83,11 +96,15 @@ public class TWSManagement extends JavaPlugin {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 
-		this.databaseConnectionManager.closeConnections();
-		LogUtils.info("All database connections have been closed in " + stopWatch.getTime() + "ms");
+		if (this.databaseConnectionManager != null) {
+			this.databaseConnectionManager.closeConnections();
+			LogUtils.info("All database connections have been closed in " + stopWatch.getTime() + "ms");
+		}
+
 		stopWatch.stop();
 		LogUtils.info("Plugin stopped in " + stopWatch.getTime() + "ms");
 	}
+
 
 	private void runDefaultSchemaSetup(
 			@NotNull IDatabaseManager[] databaseManagers,
@@ -115,5 +132,9 @@ public class TWSManagement extends JavaPlugin {
 			}
 		}
 	}
+	public JoinConfigurationManager getJoinConfigManager() {
+		return joinConfigManager;
+	}
+	public ConfigurationManager getConfigurationManager() {return this.configManager;}
 
 }

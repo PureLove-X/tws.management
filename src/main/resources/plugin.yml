@@ -9,6 +9,9 @@ database: true
 depend:
 - TAB
 commands:
+  tws:
+    description: TWS management root command for testing
+    usage: /tws <subcommand>
   afk:
     description: To go afk. Specify the exempt keyword and a Player name to prevent them from being kicked for inactivity.
     usage: |
@@ -22,10 +25,35 @@ commands:
     usage: |
       /<command>
       Example: /<command>
+  portal:
+    description: Calculates coordinates based on player position for easier nether portal syncing. Stand in the location in the overworld to get nether coords, stand in a location in the nether to get overworld coords.
+    usage:
+      /<command>
 permissions:
   tws.*:
     description: Gives access to all commands from the TWS plugin.
     children:
       tws.afk.exempt: true
+      tws.afk.kick: true
+      tws.portal: true
+      tws.hud: true
+      tws.join.reload: true
+      tws.join.debug: true
+  tws.join.reload:
+    description: Reload join configuration files
+    default: op
+  tws.join.debug:
+    description: Run join debug actions
+    default: op
   tws.afk.exempt:
     description: Gives access to add and remove players to the inactivity kick exempt list.
+    default: op
+  tws.afk.kick:
+    description: Kick a player using the AFK kick message
+    default: op
+  tws.portal:
+    description: Use the /portal command to calculate portal coordinates
+    default: true
+  tws.hud:
+    description: Toggle the HUD display
+    default: true
