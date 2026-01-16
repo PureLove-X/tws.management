@@ -39,6 +39,11 @@
 		"messageNether": "@file:portal_nether.txt",
 		"messageOverworld": "@file:portal_overworld.txt"
 	},
+	"announcementConfig" : {
+		"enabled" : true,
+		"intervalSeconds" : 1800,
+		"messages" : "@file:announcements.txt"
+	},
 	"databaseConfig": {
 		"name": "tws-local.db",
 		"maxConcurrentConnections": 5

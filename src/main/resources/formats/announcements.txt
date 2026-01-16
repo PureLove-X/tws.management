@@ -1,0 +1,95 @@
+# ============================================================
+# Announcements File
+# ============================================================
+#
+# This file defines ALL server announcements.
+#
+# Announcements can be defined EITHER:
+#   1) In this file (recommended for readability), OR
+#   2) Inline in Announce.json
+#
+# If Announce.json contains:
+#   "messages": "@file:announcements.txt"
+# then THIS file is used.
+#
+# ----------------------------
+# Announcement Types
+# ----------------------------
+#
+# @Schedule
+#   - Runs automatically at the configured interval
+#   - Can ALSO be called using /broadcast <name>
+#
+# @Broadcast
+#   - Does NOT run automatically
+#   - Can ONLY be called using /broadcast <name>
+#
+# ----------------------------
+# File Structure
+# ----------------------------
+#
+# @Type          ← either @Schedule or @Broadcast, case-insensitive
+#
+# [Name]          ← broadcast name (case-insensitive, must be one word)
+# Message line    ← one chat line per line
+#
+# Notes:
+#   - Lines starting with # are comments
+#   - Formatting, click events, hover text, gradients,
+#     and placeholders all work here
+#
+# ----------------------------
+# Inline JSON Example
+# ----------------------------
+#
+# If you prefer doing all this inside the config.json, it can also be done like this.
+#
+# {
+#   "announcements": {
+#     "enabled": true,
+#     "intervalTicks": 1800,
+#     "messages": {
+#       "scheduled": {
+#         "vote": [
+#           "&cRemember to <click:/vote|&e/vote>",
+#           "&aVoting helps grow the server!"
+#         ]
+#       },
+#       "broadcast": {
+#         "hub": [
+#           "&6We need donations for the nether hub"
+#         ]
+#       }
+#     }
+#   }
+# }
+#
+# ============================================================
+@Schedule
+[Links]
+Did you know we have an <link:"https://tws.gg/faq"|&aFAQ>, <link:"https://tws.gg/wiki"|Wiki>, <link:"https://tws.gg/map"|live map>, and <link:"https://tws.gg/stats"|statistsics> on the website?
+
+[Donate]
+Want to help us with server costs? You can donate! View tiers and perks here: <link:"https://tws.gg/donate"|https://tws.gg/donate>
+
+[plan]
+&6Type &f"/plan register <password here>" &6use a secure password you can remember.
+&bThen click the link and login with IGN and password. Enjoy the stats! :)
+
+[vote]
+&cRemember to <click:/vote|&e/vote>
+&aVoting is how we advertise our server and how players find us!
+&cIt also contributes to <gradient:"#FA20EC":"#42D8EB"|The Vote party!>
+
+[creative]
+&bWe have a creative server for our players too! IP: is creative.tws.gg
+&bWhitelist gets copied from this server to the creative server every 5 minutes
+
+@Broadcast
+[hub]
+&6&lWe need the following items donated for the nether hub:
+&e - list
+
+[spawn]
+&6We need the following items donated for the spawn build:
+&e - List

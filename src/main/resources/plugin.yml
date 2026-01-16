@@ -29,6 +29,9 @@ commands:
     description: Calculates coordinates based on player position for easier nether portal syncing. Stand in the location in the overworld to get nether coords, stand in a location in the nether to get overworld coords.
     usage:
       /<command>
+  broadcast:
+    description: Broadcast a server announcement
+    usage: /<command> <option>
 permissions:
   tws.*:
     description: Gives access to all commands from the TWS plugin.
@@ -57,3 +60,6 @@ permissions:
   tws.hud:
     description: Toggle the HUD display
     default: true
+  tws.broadcast:
+    description: access to /broadcast command
+    default: op
