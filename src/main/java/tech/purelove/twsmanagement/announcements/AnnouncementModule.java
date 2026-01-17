@@ -48,7 +48,8 @@ public final class AnnouncementModule {
 
         loader.load(cfg);
 
-        int intervalTicks = cfg.getIntervalTicks();
+        int intervalSeconds = cfg.getIntervalSeconds();
+        int intervalTicks = intervalSeconds * 20;
         int initialDelayTicks = 60 * 20; // 1 minute
 
         LogUtils.info(

@@ -28,9 +28,4 @@ public class AnnouncementConfigModel {
     public void setMessages(Object messages) {
         this.messages = messages;
     }
-
-    /** Convenience for runtime */
-    public int getIntervalTicks() {
-        return intervalSeconds * 20;
-    }
 }

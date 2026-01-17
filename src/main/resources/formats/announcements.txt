@@ -47,7 +47,7 @@
 # {
 #   "announcements": {
 #     "enabled": true,
-#     "intervalTicks": 1800,
+#     "intervalSeconds": 1800,
 #     "messages": {
 #       "scheduled": {
 #         "vote": [
@@ -66,30 +66,41 @@
 #
 # ============================================================
 @Schedule
+
 [Links]
-Did you know we have an <link:"https://tws.gg/faq"|&aFAQ>, <link:"https://tws.gg/wiki"|Wiki>, <link:"https://tws.gg/map"|live map>, and <link:"https://tws.gg/stats"|statistsics> on the website?
+&6Did you know we have helpful resources on our website?
+&7• <link:"tws.gg/faq"|&e[FAQ]>&6, <link:"tws.gg/wiki"|&e[Wiki]>&6, <link:"tws.gg/map"|&e[Live Map]> &6and <link:"tws.gg/stats"|&e[Statistics]>
+&7Those are clickable links 😉
 
 [Donate]
-Want to help us with server costs? You can donate! View tiers and perks here: <link:"https://tws.gg/donate"|https://tws.gg/donate>
+&dWant to help us cover server costs?
+&2View tiers and perks here: <link:"https://tws.gg/donate"|&ahttps://tws.gg/donate>
 
 [plan]
-&6Type &f"/plan register <password here>" &6use a secure password you can remember.
-&bThen click the link and login with IGN and password. Enjoy the stats! :)
+&6Get detailed server statistics with Plan!
+&8• &e/plan register <password>
+&8• &7Use a secure password you’ll remember
+&8• &7Click the link and log in with your IGN
+&aEnjoy the stats! 🙂
 
 [vote]
-&cRemember to <click:/vote|&e/vote>
-&aVoting is how we advertise our server and how players find us!
-&cIt also contributes to <gradient:"#FA20EC":"#42D8EB"|The Vote party!>
+&aSupport the server by voting regularly!
+&7• Type <click:/vote|&e/vote>
+&7• Or visit <link:"https://tws.gg/vote"|&ehttps://tws.gg/vote>
+&cVoting contributes to <Gradient:#FA20EC:#42D8EB|the Vote Party!>
+&aEarn points and help attract more quality players.
 
 [creative]
-&bWe have a creative server for our players too! IP: is creative.tws.gg
-&bWhitelist gets copied from this server to the creative server every 5 minutes
+&eWe also have a creative server!
+&8• &bIP: creative.tws.gg
+&8• &7Whitelist syncs every 5 minutes
 
 @Broadcast
+
 [hub]
-&6&lWe need the following items donated for the nether hub:
-&e - list
+&6Nether Hub Donations Needed:
+&e• list
 
 [spawn]
-&6We need the following items donated for the spawn build:
-&e - List
+&6Spawn Build Donations Needed:
+&e• list
