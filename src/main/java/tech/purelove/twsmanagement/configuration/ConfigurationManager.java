@@ -175,6 +175,7 @@ public class ConfigurationManager {
         ensureFormatFile(formatsDir, "portal_nether.txt");
         ensureFormatFile(formatsDir, "portal_overworld.txt");
         ensureFormatFile(formatsDir, "announcements.txt");
+        ensureFormatFile(formatsDir, "localjoin.txt");
     }
 
     private void ensureFormatFile(File formatsDir, String fileName) {

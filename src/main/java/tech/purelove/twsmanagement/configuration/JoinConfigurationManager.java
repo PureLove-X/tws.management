@@ -77,7 +77,10 @@ public class JoinConfigurationManager {
             config.firstJoinMessage = new JoinConfigModel.FirstJoinMessage();
             save = true;
         }
-
+        if (config.onJoinMessage == null) {
+            config.onJoinMessage = new JoinConfigModel.OnJoinAnnouncement();
+            save = true;
+        }
         if (config.giveWrittenBooks == null) {
             config.giveWrittenBooks = new JoinConfigModel.GiveWrittenBooks();
             save = true;

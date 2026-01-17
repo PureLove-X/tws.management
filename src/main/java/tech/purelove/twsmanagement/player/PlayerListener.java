@@ -29,6 +29,8 @@ import org.bukkit.scheduler.BukkitTask;
 import tech.purelove.twsmanagement.afk.events.AfkCommandEvent;
 import org.jetbrains.annotations.NotNull;
 
+import static tech.purelove.twsmanagement.player.join.JoinService.runJoinAnnouncement;
+
 public class PlayerListener implements Listener {
 
 	final TextComponent afkText = Component.text()
@@ -64,9 +66,11 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onJoin(@NotNull PlayerJoinEvent e) {
 		Player player = e.getPlayer();
+		JoinConfigModel cfg = joinConfigManager.getConfig();
 		if (!player.hasPlayedBefore()) {
-			JoinConfigModel cfg = joinConfigManager.getConfig();
 			JoinService.runFirstJoin(plugin, player, cfg);
+		} else {
+			runJoinAnnouncement(plugin, player, cfg);
 		}
 		final UUID playerId = player.getUniqueId();
 		Integer taskId = this.createAndStartAfkManagerTask(playerId);

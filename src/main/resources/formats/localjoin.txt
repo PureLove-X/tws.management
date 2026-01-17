@@ -1,0 +1,6 @@
+# By default this message also appears to players who are joining for the first time that can be changed in the join.json config
+# If enabled to show, it will appear after the first join message.
+#
+#
+#
+&2[Announcement]&f &6Welcome back to TWS everyone!!

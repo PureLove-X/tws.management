@@ -22,7 +22,7 @@ public final class JoinService {
             JoinConfigModel cfg
     ) {
         // Welcome message (broadcast, viewerMode allowed)
-        if (cfg.firstJoinMessage.enabled) {
+        if ( cfg.firstJoinMessage.enabled) {
             MessageResolver.ResolvedMessage msg =
                     MessageResolver.resolve(plugin, cfg.firstJoinMessage.message);
 
@@ -75,7 +75,37 @@ public final class JoinService {
                     }
                 }
             }
-
+            runJoinAnnouncement(plugin, player, cfg);
         }, cfg.delay * 20L);
+
     }
+    public static void runJoinAnnouncement(
+            JavaPlugin plugin,
+            Player player,
+            JoinConfigModel cfg
+    ) {
+        boolean firstJoin = !player.hasPlayedBefore();
+        JoinConfigModel.OnJoinAnnouncement joinAnn = cfg.onJoinMessage;
+
+        if (!joinAnn.enabled) return;
+
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+
+            if (!player.isOnline()) return;
+
+            if (!firstJoin || joinAnn.showToFirstJoins) {
+                MessageResolver.ResolvedMessage msg =
+                        MessageResolver.resolve(plugin, joinAnn.message);
+
+                String raw = msg.fallback();
+                if (raw != null && !raw.isEmpty()) {
+                    player.sendMessage(
+                            TextProcessor.parse(raw, player, player)
+                    );
+                }
+            }
+
+        }, 10L); //
+    }
+
 }

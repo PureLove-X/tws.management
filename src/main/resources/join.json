@@ -3,14 +3,17 @@
     "enabled": true,
     "message": "@file:join_msg.txt"
   },
-
+  "onJoinMessage": {
+    "enabled": true,
+    "showToFirstJoins": true,
+    "message":"@file:localjoin.txt"
+  },
   "giveWrittenBooks": {
     "enabled": true,
     "bookFiles": [
       "Example.txt"
     ]
   },
-
   "teleport": {
     "enabled": true,
     "world": "world",
