@@ -26,6 +26,9 @@
 		"sendPlayerAfkMessage": true,
 		"afkKick": true
 	},
+	"nightResetConfig": {
+		"enabled": true
+	},
 	"hudConfig": {
 		"enabled": true,
 		"refreshRateTicks": 10,

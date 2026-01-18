@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import tech.purelove.twsmanagement.TWSManagement;
 import tech.purelove.twsmanagement.configuration.*;
 import tech.purelove.twsmanagement.data.interfaces.IExemptDatabaseManager;
 import tech.purelove.twsmanagement.data.interfaces.IHudDatabaseManager;
@@ -23,7 +24,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import tech.purelove.twsmanagement.afk.events.AfkCommandEvent;
@@ -44,14 +44,14 @@ public class PlayerListener implements Listener {
 		.style(Style.empty())
 		.build();
 
-	private final JavaPlugin plugin;
+	private final TWSManagement plugin;
 	private final IExemptDatabaseManager afkDatabaseManager;
 	private final IHudDatabaseManager hudDatabaseManager;
 	private final ConfigurationManager configManager;
 	private final HashMap<UUID,Integer> playerAfkManagerTasks;
 	private final JoinConfigurationManager joinConfigManager;
 	
-	public PlayerListener(@NotNull JavaPlugin plugin,
+	public PlayerListener(@NotNull TWSManagement plugin,
 						  @NotNull IExemptDatabaseManager afkDatabaseManager,
 						  @NotNull IHudDatabaseManager hudDatabaseManager,
 						  @NotNull ConfigurationManager configManager, JoinConfigurationManager  joinConfigManager) {
@@ -70,7 +70,9 @@ public class PlayerListener implements Listener {
 		if (!player.hasPlayedBefore()) {
 			JoinService.runFirstJoin(plugin, player, cfg);
 		} else {
+			if (cfg.onJoinMessage.enabled) {
 			runJoinAnnouncement(plugin, player, cfg);
+		}
 		}
 		final UUID playerId = player.getUniqueId();
 		Integer taskId = this.createAndStartAfkManagerTask(playerId);
@@ -131,6 +133,12 @@ public class PlayerListener implements Listener {
 
 		// Only reset the Tab if they were actually AFK
 		if (TabPluginHelper.hasTabSuffix(playerId)) {
+			Player player = plugin.getServer().getPlayer(playerId);
+			if (player != null) {
+				if (plugin.isNightResetEnabled()) {
+				player.setSleepingIgnored(false);
+			}
+			}
 			Runnable tabTask = () -> TabPluginHelper.resetTabSuffix(playerId);
 			this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, tabTask);
 		}
@@ -179,8 +187,10 @@ public class PlayerListener implements Listener {
 						.build();
 
 					player.sendMessage(youAreAfk);
-				}
 
+				}
+				if (plugin.isNightResetEnabled()) {
+				player.setSleepingIgnored(true); }
 				Runnable tabTask = () -> TabPluginHelper.setTabSuffix(playerId, afkText);
 				this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, tabTask);
 			}

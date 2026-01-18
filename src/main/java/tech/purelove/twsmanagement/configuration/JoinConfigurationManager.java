@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import tech.purelove.twsmanagement.util.LogUtils;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,10 @@ public class JoinConfigurationManager {
     public void reload() {
         // Ensure plugin folder exists
         if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
+            if (!file.getParentFile().mkdirs()) {
+                LogUtils.error("Unable to create join config directory");
+                return;
+            }
         }
 
         // Ensure join.json exists
@@ -30,7 +34,6 @@ public class JoinConfigurationManager {
             plugin.saveResource(file.getName(), false);
         }
 
-        // Ensure books folder + example.txt exist
         ensureBooksFolder();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -39,9 +42,10 @@ public class JoinConfigurationManager {
         } catch (IOException e) {
             LogUtils.error("Unable to read join config");
             LogUtils.error(e.getMessage());
+            return;
         }
 
-        boolean saveRequired = verifyDefaults();
+        boolean saveRequired = verifyDefaults(config);
 
         if (saveRequired) {
             try {
@@ -49,49 +53,53 @@ public class JoinConfigurationManager {
                 mapper.writeValue(file, config);
             } catch (IOException e) {
                 LogUtils.error("Unable to write join config");
+                LogUtils.error(e.getMessage());
             }
         }
     }
 
-    private void ensureBooksFolder() {
-        File booksDir = new File(plugin.getDataFolder(), "books");
-        if (!booksDir.exists()) {
-            booksDir.mkdirs();
-        }
-
-        File example = new File(booksDir, "Example.txt");
-        if (!example.exists()) {
-            plugin.saveResource("books/Example.txt", false);
-        }
-    }
-
-    private boolean verifyDefaults() {
+    private boolean verifyDefaults(@NotNull JoinConfigModel cfg) {
         boolean save = false;
 
-        if (config == null) {
-            config = new JoinConfigModel();
-            return true;
-        }
-
-        if (config.firstJoinMessage == null) {
-            config.firstJoinMessage = new JoinConfigModel.FirstJoinMessage();
-            save = true;
-        }
-        if (config.onJoinMessage == null) {
-            config.onJoinMessage = new JoinConfigModel.OnJoinAnnouncement();
-            save = true;
-        }
-        if (config.giveWrittenBooks == null) {
-            config.giveWrittenBooks = new JoinConfigModel.GiveWrittenBooks();
+        if (cfg.firstJoinMessage == null) {
+            cfg.firstJoinMessage = new JoinConfigModel.FirstJoinMessage();
             save = true;
         }
 
-        if (config.teleport == null) {
-            config.teleport = new JoinConfigModel.Teleport();
+        if (cfg.onJoinMessage == null) {
+            cfg.onJoinMessage = new JoinConfigModel.OnJoinAnnouncement();
+            save = true;
+        }
+
+        if (cfg.giveWrittenBooks == null) {
+            cfg.giveWrittenBooks = new JoinConfigModel.GiveWrittenBooks();
+            save = true;
+        }
+
+        if (cfg.teleport == null) {
+            cfg.teleport = new JoinConfigModel.Teleport();
             save = true;
         }
 
         return save;
+    }
+
+    private void ensureBooksFolder() {
+        File booksDir = new File(plugin.getDataFolder(), "books");
+
+        if (!booksDir.exists() && !booksDir.mkdirs()) {
+            LogUtils.error("Unable to create books directory");
+            return;
+        }
+
+        File example = new File(booksDir, "Example.txt");
+        if (!example.exists()) {
+            try {
+                plugin.saveResource("books/Example.txt", false);
+            } catch (IllegalArgumentException e) {
+                LogUtils.error("Missing default Example.txt in jar");
+            }
+        }
     }
 
     public JoinConfigModel getConfig() {

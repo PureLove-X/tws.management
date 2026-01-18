@@ -36,7 +36,7 @@ public class TWSManagement extends JavaPlugin {
 	private AnnouncementRegistry announcementRegistry;
 	private AnnouncementLoader announcementLoader;
 	private AnnouncementModule announcementModule;
-
+	private volatile boolean nightResetEnabled;
 	public TWSManagement() {
     	this.configManager = new ConfigurationManager(this, "config.json");
 
@@ -56,8 +56,13 @@ public class TWSManagement extends JavaPlugin {
 		ConfigModel config = this.configManager.getConfig();
 		DatabaseConfigModel databaseConfig = config.getDatabaseConfig();
 		AfkConfigModel afkConfig = config.getAfkConfig();
-		NightResetConfigModel nightResetConfig = config.getNightResetConfig();
 		HudConfigModel hudConfig = config.getHudConfig();
+		NightResetConfigModel nightResetConfig =
+				this.configManager.getConfig().getNightResetConfig();
+
+		this.nightResetEnabled =
+				nightResetConfig != null && nightResetConfig.getEnabled();
+
 		// onEnable()
 		this.announcementRegistry = new AnnouncementRegistry();
 		this.announcementLoader = new AnnouncementLoader(this, announcementRegistry);
@@ -158,6 +163,9 @@ public class TWSManagement extends JavaPlugin {
 		if (announcementModule != null) {
 			announcementModule.reload();
 		}
+	}
+	public boolean isNightResetEnabled() {
+		return nightResetEnabled;
 	}
 
 

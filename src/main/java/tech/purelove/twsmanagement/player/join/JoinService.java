@@ -75,7 +75,7 @@ public final class JoinService {
                     }
                 }
             }
-            runJoinAnnouncement(plugin, player, cfg);
+            if (cfg.onJoinMessage.enabled && cfg.onJoinMessage.showToFirstJoins) {runJoinAnnouncement(plugin, player, cfg);}
         }, cfg.delay * 20L);
 
     }
@@ -105,7 +105,7 @@ public final class JoinService {
                 }
             }
 
-        }, 10L); //
+        }, 5L); //
     }
 
 }

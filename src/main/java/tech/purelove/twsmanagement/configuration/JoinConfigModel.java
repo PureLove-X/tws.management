@@ -5,10 +5,11 @@ import java.util.List;
 public class JoinConfigModel {
 
     public int delay = 0;
-    public OnJoinAnnouncement onJoinMessage = new OnJoinAnnouncement();
-    public FirstJoinMessage firstJoinMessage = new FirstJoinMessage();
-    public GiveWrittenBooks giveWrittenBooks = new GiveWrittenBooks();
-    public Teleport teleport = new Teleport();
+
+    public OnJoinAnnouncement onJoinMessage;
+    public FirstJoinMessage firstJoinMessage;
+    public GiveWrittenBooks giveWrittenBooks;
+    public Teleport teleport;
 
     public static class FirstJoinMessage {
         public boolean enabled = true;
@@ -29,10 +30,10 @@ public class JoinConfigModel {
         public float yaw = 0f;
         public float pitch = 0f;
     }
+
     public static class OnJoinAnnouncement {
         public boolean enabled = true;
         public boolean showToFirstJoins = false;
         public String message = "@file:localJoin.txt";
     }
-
 }
